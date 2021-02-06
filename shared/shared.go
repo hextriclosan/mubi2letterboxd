@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -34,7 +35,7 @@ type movieRecord struct {
 const (
 	url                   = "https://mubi.com/services/api/ratings"
 	perPage               = "1000"
-    LetterboxdCsvFileName = "letterboxd.csv"
+	LetterboxdCsvFileName = "letterboxd.csv"
 )
 
 func ValidateMubiUserId(mubiUserId string) error {
@@ -49,14 +50,14 @@ func ValidateMubiUserId(mubiUserId string) error {
 	return nil
 }
 
-func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) error {
+func Process(mubiUserId string, updateStatus StatusUpdater) ([][]string, error) {
 	var movieRecords []movieRecord
 	var csvRows [][]string
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	query := req.URL.Query()
 	query.Set("user_id", mubiUserId)
@@ -70,20 +71,20 @@ func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) 
 
 		response, err := client.Do(req)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		if response.StatusCode != http.StatusOK {
-			return errors.New(fmt.Sprintf("Server returned status code %d", response.StatusCode))
+			return nil, errors.New(fmt.Sprintf("Server returned status code %d", response.StatusCode))
 		}
 
 		jsonFile, err := ioutil.ReadAll(response.Body)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		if err := json.Unmarshal(jsonFile, &movieRecords); err != nil {
-			return err
+			return nil, err
 		}
 		updateStatus(fmt.Sprintf("downloaded %d records\n", len(movieRecords)))
 
@@ -98,9 +99,13 @@ func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) 
 
 	if len(csvRows) == 0 {
 		updateStatus(fmt.Sprintf("\nNo records found at MUBI server for UserID %s\n", mubiUserId))
-		return nil
+		return nil, nil
 	}
 
+	return csvRows, err
+}
+
+func SaveFile(csvFileName string, csvRows *[][]string, updateStatus StatusUpdater) error {
 	outFile, err := os.Create(csvFileName)
 	if err != nil {
 		return err
@@ -112,12 +117,7 @@ func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) 
 		}
 	}()
 
-	csvwriter := csv.NewWriter(outFile)
-	defer csvwriter.Flush()
-	if err := csvwriter.Write([]string{"tmdbID", "Title", "Year", "Directors", "Rating", "WatchedDate", "Review"}); err != nil {
-		return err
-	}
-	if err := csvwriter.WriteAll(csvRows); err != nil {
+	if err := WriteCsv(outFile, csvRows); err != nil {
 		return err
 	}
 
@@ -125,9 +125,22 @@ func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) 
 	if err != nil {
 		return err
 	}
-	updateStatus(fmt.Sprintf("\n%d records are saved to %q\n", len(csvRows), absPath))
+	updateStatus(fmt.Sprintf("\n%d records are saved to %q\n", len(*csvRows), absPath))
 
 	return outFile.Sync()
+}
+
+func WriteCsv(writer io.Writer, csvRows *[][]string) error {
+	csvwriter := csv.NewWriter(writer)
+	if err := csvwriter.Write([]string{"tmdbID", "Title", "Year", "Directors", "Rating", "WatchedDate", "Review"}); err != nil {
+		return err
+	}
+	if err := csvwriter.WriteAll(*csvRows); err != nil {
+		return err
+	}
+
+	csvwriter.Flush()
+	return csvwriter.Error()
 }
 
 func generateCsvRow(r movieRecord) []string {

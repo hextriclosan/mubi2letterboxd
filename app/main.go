@@ -8,8 +8,8 @@ package main
 
 import (
 	"flag"
-	"mubi2letterboxd/cli"
-	"mubi2letterboxd/gui"
+	"github.com/hextriclosan/mubi2letterboxd/app/cli"
+	"github.com/hextriclosan/mubi2letterboxd/app/gui"
 )
 
 func main() {

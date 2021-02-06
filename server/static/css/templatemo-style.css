@@ -1,0 +1,354 @@
+
+html {
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #6b6b6b;
+  overflow-x: hidden;
+}
+
+a,
+button {
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.container-fluid {
+  max-width: 1200px;
+}
+
+.tm-bg-black-transparent {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.tm-bg-white-transparent {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.tm-bg-grey1 {
+  background-color: #aaa;
+}
+
+.tm-bg-grey2 {
+  background-color: #888;
+}
+
+.tm-bg-grey3 {
+  background-color: #666;
+}
+
+.tm-bg-dark-grey4 {
+  background-color: #444;
+}
+
+/*
+  Welcome section
+*/
+#tmWelcome {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tm-brand-container-outer {
+  margin-top: -400px;
+}
+
+.tm-brand-container-inner {
+  max-width: 580px;
+  width: 100%;
+}
+
+.tm-brand-container {
+  padding: 75px 110px;
+}
+
+.tm-brand-name {
+  font-size: 3.8rem;
+}
+
+.tm-brand-description {
+  font-size: 1.4rem;
+}
+
+.parallax-window {
+  min-height: 1100px;
+  background: transparent;
+}
+
+#tmDonation {
+  min-height: 1197px;
+}
+
+.tm-welcome-container {
+  min-height: 400px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.tm-welcome-title {
+  margin-bottom: 40px;
+}
+
+.tm-welcome-left {
+  padding-right: 30px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.tm-welcome-left-col {
+  display: flex;
+  align-items: center;
+}
+
+.tm-welcome-right {
+  color: white;
+  background-color: #986665;
+  padding: 80px 43px 70px;
+  height: 100%;
+}
+
+.tm-welcome-icon {
+  margin-bottom: 50px;
+  display: block;
+  text-align: center;
+}
+
+/*
+  Steps section
+*/
+
+#tmSteps {
+  padding-top: 80px;
+}
+
+.tm-steps-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.tm-steps-name {
+  width: 330px;
+  height: 220px;
+  font-size: 2rem;
+  padding: 70px 95px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.tm-steps-description {
+  width: calc(100% - 330px);
+  padding: 20px 45px;
+}
+
+.tm-steps-description h3 {
+  margin-bottom: 20px;
+}
+
+.tm-text-grey1 {
+  color: #aaa;
+}
+
+.tm-text-grey2 {
+  color: #888;
+}
+
+.tm-text-grey3 {
+  color: #666;
+}
+
+.tm-text-gray4 {
+  color: #444;
+}
+
+.tm-title-small {
+  font-size: 1.3rem;
+}
+
+p {
+  line-height: 1.8;
+}
+
+/*
+  Donation section
+*/
+
+#tmDonation {
+  padding-top: 95px;
+}
+
+.tm-donation-item {
+  width: 50%;
+  max-width: 380px;
+  height: auto;
+  min-height: 100px;
+  margin-right: 35px;
+  background-color: rgb(255, 255, 255, 0.7);
+  padding: 34px 34px 34px 34px;
+}
+
+.tm-donation-item:last-child {
+  margin-right: 0;
+}
+
+.tm-donation-items-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 130px;
+}
+
+.tm-donation-item-icon {
+  margin-bottom: 45px;
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mubi_site {
+  padding:20px;
+  border:thin dotted black;
+}
+
+#form_container {
+  border:5px dotted black;
+  width: 450px;
+}
+
+#tmDonationForm {
+  width: 100%;
+  max-width: 680px;
+  padding: 45px 45px 30px;
+  margin-bottom: 45px;
+}
+
+.form-group {
+  max-width: 355px;
+}
+
+.form-control {
+  background: transparent;
+  border-color: #999999;
+  padding: 15px 10px;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.tm-btn-submit {
+  background-color: #888;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+}
+
+.tm-btn-submit:focus,
+.tm-btn-submit:hover {
+  background-color: #676767;
+}
+
+.tm-copyright-text {
+  margin-bottom: 30px;
+}
+
+.tm-link {
+  color: #676767;
+}
+
+#logo {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 163px;
+  height: 84px;
+}
+
+.cba-logo {
+  width: 97px;
+  height: 48px;
+}
+
+.qr {
+  width: 90px;
+  height: 90px;
+}
+
+
+@media (max-width: 1054px) {
+  .tm-donation-item-icon {
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .tm-donation-items-container {
+    flex-direction: column;
+  }
+
+  .tm-donation-item {
+    width: auto;
+    max-width: 400px;
+    min-height: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+  }
+
+  .tm-donation-item:last-child {
+    margin-right: auto;
+    margin-bottom: 0;
+  }
+
+  #tmDonationForm {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 730px) {
+  .tm-steps-item {
+    flex-direction: column;
+  }
+
+  .tm-steps-name {
+    justify-content: center;
+  }
+
+  .tm-steps-name,
+  .tm-steps-description {
+    width: 100%;
+  }
+
+  .tm-steps-description {
+    padding: 20px 30px;
+  }
+}
+
+@media (max-width: 572px) {
+  .tm-brand-container {
+    padding: 45px;
+  }
+}
+
+@media (max-width: 443px) {
+  .tm-brand-name {
+    font-size: 3rem;
+  }
+
+  .tm-brand-container {
+    padding: 25px;
+  }
+}

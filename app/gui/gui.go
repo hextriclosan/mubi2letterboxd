@@ -8,7 +8,7 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/storage"
 	"fyne.io/fyne/v2/widget"
-	"mubi2letterboxd/shared"
+	"github.com/hextriclosan/mubi2letterboxd/shared"
 )
 
 func ProcessGui() {
@@ -28,7 +28,7 @@ func ProcessGui() {
 
 	entry.OnChanged = func(s string) {
 		err := shared.ValidateMubiUserId(s)
-		if err == nil  {
+		if err == nil {
 			button.Enable()
 			statusLabel.SetText("Ready")
 		} else {
@@ -44,11 +44,17 @@ func ProcessGui() {
 
 		statusUpdater := func(s string) {
 			statusLabel.SetText(statusLabel.Text + s)
-    	}
+		}
 
 		fileDialog := dialog.NewFileSave(func(result fyne.URIWriteCloser, err error) {
 			if err == nil && result != nil {
-				if err := shared.Process(mubiUserId, result.URI().Path(), statusUpdater); err != nil {
+				csvRows, err := shared.Process(mubiUserId, statusUpdater)
+				if err != nil {
+					processError := fmt.Errorf("Error occurred: %s\n", err)
+					dialog.ShowError(processError, window)
+					statusLabel.SetText(fmt.Sprint(processError))
+				}
+				if err := shared.SaveFile(result.URI().Path(), &csvRows, statusUpdater); err != nil {
 					processError := fmt.Errorf("Error occurred: %s\n", err)
 					dialog.ShowError(processError, window)
 					statusLabel.SetText(fmt.Sprint(processError))
