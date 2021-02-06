@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600"/>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../static/css/templatemo-style.css"/>
+    <title>MUBI to Letterboxd</title>
+</head>
+<body>
+<!-- Welcome Section -->
+<section id="tmWelcome" class="parallax-window" data-parallax="scroll"
+         data-image-src="../static/img/mini-profile-bg-01.jpg">
+    <div class="container-fluid tm-brand-container-outer">
+        <div class="row">
+            <div class="col-12">
+                <!-- Logo Area -->
+                <!-- Black transparent bg -->
+                <div class="ml-auto mr-0 tm-bg-black-transparent text-white tm-brand-container-inner">
+                    <div class="tm-brand-container text-center">
+                        <h1 class="tm-brand-name">MUBI to Letterboxd</h1>
+                        <p class="tm-brand-description mb-0">migrate your profile data</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tm-bg-white-transparent tm-welcome-container">
+        <div class="container-fluid">
+            <div class="row h-100">
+                <!-- Welcome Text -->
+                <!-- White transparent bg -->
+                <div class="col-md-7 tm-welcome-left-col">
+                    <div class="tm-welcome-left">
+                        <h2 class="tm-welcome-title">What is this site for</h2>
+                        <p class="pb-0">
+                            If you have an account on <a target="_blank" rel="noopener noreferrer"
+                                                         href="https://mubi.com">MUBI</a>, you can easily migrate your
+                            data (rated movies) to <a target="_blank" rel="noopener noreferrer"
+                                                      href="https://letterboxd.com/">letterboxd</a> in a few quick steps
+                            as described below.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Welcome section -->
+
+<!-- Steps section -->
+<section id="tmSteps">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="tm-steps-item">
+                    <div class="tm-steps-name text-white tm-bg-grey1">
+                        Step 1
+                    </div>
+                    <div class="tm-steps-description">
+                        <h3 class="tm-text-grey1">
+                            Login to your MUBI profile
+                        </h3>
+                        <p class="mb-0">
+                            Open your profile page on MUBI. Examine your browser address line to find out your UserID.
+                            UserID is the number at the end of the site address:
+                        </p>
+                        <img id="mubi_site" src="../static/img/userid_url.png" alt="MUBI site screen"/>
+                    </div>
+                </div>
+
+                <div class="tm-steps-item">
+                    <div class="tm-steps-name text-white tm-bg-grey2">
+                        Step 2
+                    </div>
+                    <div class="tm-steps-description">
+                        <h3 class="tm-text-grey2">
+                            Generate the import file
+                        </h3>
+                        <p class="mb-0">
+                            Input your UserID and press 'Generate'—and that's it! You'll find the generated <i>letterboxd.csv</i>
+                            file in your Downloads directory.
+                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="form_container">
+                                    <form
+                                            action="index.html"
+                                            method="POST"
+                                            id="tmDonationForm"
+                                            class="tm-bg-white-transparent">
+                                        <div class="form-group">
+                                            <input
+                                                    type="text"
+                                                    id="user_id"
+                                                    name="user_id"
+                                                    class="form-control rounded-0 border-top-0 border-right-0 border-left-0"
+                                                    placeholder="User ID"
+                                                    required/>
+                                            <div class="text-center">
+                                                <button
+                                                        type="submit"
+                                                        class="btn tm-btn-submit rounded-lg text-white float-right">
+                                                    Generate
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tm-steps-item">
+                    <div class="tm-steps-name text-white tm-bg-grey3">
+                        Step 3
+                    </div>
+                    <div class="tm-steps-description">
+                        <h3 class="tm-text-grey3">
+                            Upload the file to Letterboxd
+                        </h3>
+                        <p class="mb-0">
+                            Proceed to the <a target="_blank" rel="noopener noreferrer"
+                                              href="https://letterboxd.com/import/">Letterboxd import page</a> and
+                            follow the instructions to add your MUBI data to your Letterboxd profile.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tm-steps-item">
+                    <div class="tm-steps-name text-white tm-bg-dark-grey4">
+                        Step 4
+                    </div>
+                    <div class="tm-steps-description">
+                        <h3 class="tm-text-gray4">
+                            Consider donating
+                        </h3>
+                        <p class="mb-0">
+                            If you found the project useful, <a target="_blank" rel="noopener noreferrer"
+                                                                href="https://savelife.in.ua/en">consider supporting
+                            Ukraine</a>. Army aid donations are the best way to save the lives of people who are dying
+                            because of the russian invasion. You also can <a target="_blank" rel="noopener noreferrer"
+                                                                             href="https://www.buymeacoffee.com/hextriclosan">buy
+                            me a coffee</a>, and I'll put the donation to a good use.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End steps section -->
+
+<!-- Donations section -->
+<div id="tmDonation" class="parallax-window" data-parallax="scroll"
+     data-image-src="../static/img/mini-profile-bg-02.jpg">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="tm-donation-items-container">
+
+                    <div class="tm-donation-item d-flex align-middle align-items-center"
+                         data-image-src="../static/img/mini-profile-bg-02.jpg">
+                        <p><a href="https://savelife.in.ua/en" aria-label="The fund homepage">Support Ukrainian Army
+                            <img src="../static/img/savelife-logo-en.svg" class="cba-logo"></a>
+                        </p>
+                    </div>
+
+                    <div class="tm-donation-item d-flex align-middle align-items-center">
+                        <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                                data-name="bmc-button" data-slug="hextriclosan" data-color="#FFDD00" data-emoji=""
+                                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000"
+                                data-font-color="#000000" data-coffee-color="#ffffff">
+                        </script>&nbsp;<img src="../static/img/bmc_qr.png" class="qr"/>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- row -->
+        <div class="row">
+            <footer class="col-12">
+                <p class="text-center tm-copyright-text">
+                    Igor Rudenko - 2024
+                </p>
+            </footer>
+        </div>
+    </div>
+    <!-- container -->
+</div>
+<!-- section -->
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/parallax.min.js"></script>
+<script>
+    function detectMsBrowser() {
+        using_ms_browser =
+            navigator.appName == "Microsoft Internet Explorer" ||
+            (navigator.appName == "Netscape" &&
+                navigator.appVersion.indexOf("Edge") > -1) ||
+            (navigator.appName == "Netscape" &&
+                navigator.appVersion.indexOf("Trident") > -1);
+
+        if (using_ms_browser == true) {
+            alert(
+                "Please use Chrome or Firefox for the best browsing experience!"
+            );
+        }
+    }
+
+    function setBrandMarginTop() {
+        var bottomContainerHeight = $(".tm-welcome-container").height();
+
+        $(".tm-brand-container-outer").css({
+            "margin-top": -bottomContainerHeight + "px"
+        });
+    }
+
+    $(function () {
+        setBrandMarginTop();
+        detectMsBrowser();
+
+        // Handle window resize event
+        $(window).resize(function () {
+            setBrandMarginTop();
+        });
+    });
+
+    $('input[name="user_id"]').keyup(function (e) {
+        if (/\D/g.test(this.value)) {
+            // Filter non-digits from input value.
+            this.value = this.value.replace(/\D/g, '');
+        }
+    });
+</script>
+</body>
+</html>

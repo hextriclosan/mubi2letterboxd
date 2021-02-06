@@ -2,7 +2,7 @@ package cli
 
 import (
 	"fmt"
-	"mubi2letterboxd/shared"
+	"github.com/hextriclosan/mubi2letterboxd/shared"
 	"os"
 )
 
@@ -20,7 +20,13 @@ func ProcessCli() error {
 		return err
 	}
 
-	if err := shared.Process(mubiUserId, shared.LetterboxdCsvFileName, updateStatus); err != nil {
+	csvRows, err := shared.Process(mubiUserId, updateStatus)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error occurred: %s\n", err)
+		return err
+	}
+
+	if err := shared.SaveFile(shared.LetterboxdCsvFileName, &csvRows, updateStatus); err != nil {
 		fmt.Fprintf(os.Stderr, "Error occurred: %s\n", err)
 		return err
 	}
