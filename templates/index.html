@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Template</title>
+</head>
+
+<body>
+    <form method="POST">
+        <input type="text" name="user_id">
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>Values</h1>
+    USED_ID={{ .UserId }}<br>
+    SIZE={{ .Size }}<br>
+    DownloadId={{ .DownloadId }}<br>
+    <a href="/get_file?id={{.DownloadId}}">get file</a>
+
+</body>
+
+</html>

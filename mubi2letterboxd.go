@@ -7,7 +7,7 @@
 package main
 
 import (
-	"bufio"
+	"bytes"
 	"encoding/csv"
 	"encoding/json"
 	"errors"
@@ -42,26 +42,13 @@ const (
 	letterboxdCsvFileName = "letterboxd.csv"
 )
 
-func main() {
-	fmt.Print("Input MUBI userID and press Enter: ")
-	var mubiUserId string
-	if _, err := fmt.Scanf("%s", &mubiUserId); err == nil {
-		if _, err := strconv.ParseUint(mubiUserId, 10, 64); err == nil {
-			if err := process(mubiUserId); err != nil {
-				fmt.Fprintf(os.Stderr, "Error occurred: %s\n", err)
-			}
-		} else {
-			fmt.Fprintf(os.Stderr,"%q is not a valid UserId\n", mubiUserId)
-		}
-	} else {
-		fmt.Fprintf(os.Stderr, "Error reading UserID: %s\n", err)
-	}
-
-	fmt.Print("Press Enter to exit")
-	bufio.NewReader(os.Stdin).ReadBytes('\n')
+type Student struct {
+	Name       string
+	College    string
+	RollNumber int
 }
 
-func process(mubiUserId string) error {
+func process(mubiUserId string) (string, error) {
 
 	var movieRecords []MovieRecord
 	var csvRows [][]string
@@ -69,7 +56,7 @@ func process(mubiUserId string) error {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return err
+		return "", err
 	}
 	query := req.URL.Query()
 	query.Set("user_id", mubiUserId)
@@ -83,20 +70,20 @@ func process(mubiUserId string) error {
 
 		response, err := client.Do(req)
 		if err != nil {
-			return err
+			return "", err
 		}
 
 		if response.StatusCode != http.StatusOK {
-			return errors.New(fmt.Sprintf("Server returned status code %d", response.StatusCode))
+			return "", errors.New(fmt.Sprintf("Server returned status code %d", response.StatusCode))
 		}
 
 		jsonFile, err := ioutil.ReadAll(response.Body)
 		if err != nil {
-			return err
+			return "", err
 		}
 
 		if err := json.Unmarshal(jsonFile, &movieRecords); err != nil {
-			return err
+			return "", err
 		}
 		fmt.Printf("downloaded %d records\n", len(movieRecords))
 
@@ -111,12 +98,12 @@ func process(mubiUserId string) error {
 
 	if len(csvRows) == 0 {
 		fmt.Printf("\nNo records found at MUBI server for UserID %s\n", mubiUserId)
-		return nil
+		return "", nil
 	}
 
 	outFile, err := os.Create(letterboxdCsvFileName)
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer func() {
 		err := outFile.Close()
@@ -125,22 +112,24 @@ func process(mubiUserId string) error {
 		}
 	}()
 
-	csvwriter := csv.NewWriter(outFile)
+	b := new(bytes.Buffer)
+	csvwriter := csv.NewWriter(b)
 	defer csvwriter.Flush()
 	if err := csvwriter.Write([]string{"tmdbID", "Title", "Year", "Directors", "Rating", "WatchedDate", "Review"}); err != nil {
-		return err
+		return "", err
 	}
 	if err := csvwriter.WriteAll(csvRows); err != nil {
-		return err
+		return "", err
 	}
 
 	absPath, err := filepath.Abs(outFile.Name())
 	if err != nil {
-		return err
+		return "", err
 	}
 	fmt.Printf("\n%d records are saved to %q\n", len(csvRows), absPath)
 
-	return outFile.Sync()
+	outFile.Sync()
+	return b.String(), nil
 }
 
 func generateCsvRow(r MovieRecord) []string {
