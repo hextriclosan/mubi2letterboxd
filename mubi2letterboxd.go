@@ -155,7 +155,7 @@ func generateCsvRow(r MovieRecord) []string {
 	directorsOut := strings.Join(directors, ", ")
 
 	ratingOut := strconv.Itoa(r.Rating)
-	timeOut := time.Unix(r.WatchedAt, 0).Format("2006-01-02")
+	timeOut := time.Unix(r.WatchedAt, 0).UTC().Format("2006-01-02")
 	reviewOut := r.Review
 
 	return []string{idOut, titleOut, yearOut, directorsOut, ratingOut, timeOut, reviewOut}
