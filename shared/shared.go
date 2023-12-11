@@ -1,13 +1,6 @@
-// mubi2letterboxd is a simple command line utility for user data migration from MUBI to letterboxd.
-// With the utility, you can create a .csv file suitable for manual import to Letterboxd.
-//
-// inspired by the reddit entry by jcunews1
-// https://www.reddit.com/r/learnjavascript/comments/auwynr/export_mubi_data/ehcx2zf/
-
-package main
+package shared
 
 import (
-	"bufio"
 	"encoding/csv"
 	"encoding/json"
 	"errors"
@@ -22,7 +15,9 @@ import (
 	"time"
 )
 
-type MovieRecord struct {
+type StatusUpdater func(string)
+
+type movieRecord struct {
 	Id        int    `json:"id"`
 	Review    string `json:"body"`
 	WatchedAt int64  `json:"updated_at"`
@@ -39,31 +34,23 @@ type MovieRecord struct {
 const (
 	url                   = "https://mubi.com/services/api/ratings"
 	perPage               = "1000"
-	letterboxdCsvFileName = "letterboxd.csv"
+    LetterboxdCsvFileName = "letterboxd.csv"
 )
 
-func main() {
-	fmt.Print("Input MUBI userID and press Enter: ")
-	var mubiUserId string
-	if _, err := fmt.Scanf("%s", &mubiUserId); err == nil {
-		if _, err := strconv.ParseUint(mubiUserId, 10, 64); err == nil {
-			if err := process(mubiUserId); err != nil {
-				fmt.Fprintf(os.Stderr, "Error occurred: %s\n", err)
-			}
-		} else {
-			fmt.Fprintf(os.Stderr,"%q is not a valid UserId\n", mubiUserId)
-		}
-	} else {
-		fmt.Fprintf(os.Stderr, "Error reading UserID: %s\n", err)
+func ValidateMubiUserId(mubiUserId string) error {
+	if len(mubiUserId) == 0 {
+		return fmt.Errorf("MUBI User ID is empty")
 	}
 
-	fmt.Print("Press Enter to exit")
-	bufio.NewReader(os.Stdin).ReadBytes('\n')
+	if _, err := strconv.ParseUint(mubiUserId, 10, 64); err != nil {
+		return fmt.Errorf("%q is not a valid UserId: %s", mubiUserId, err)
+	}
+
+	return nil
 }
 
-func process(mubiUserId string) error {
-
-	var movieRecords []MovieRecord
+func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) error {
+	var movieRecords []movieRecord
 	var csvRows [][]string
 
 	client := &http.Client{}
@@ -75,9 +62,9 @@ func process(mubiUserId string) error {
 	query.Set("user_id", mubiUserId)
 	query.Set("per_page", perPage)
 
-	fmt.Printf("Data for UserID %s will be requested from MUBI server\n", mubiUserId)
+	updateStatus(fmt.Sprintf("Data for UserID %s will be requested from MUBI server\n", mubiUserId))
 	for i := 1; ; i++ {
-		fmt.Printf("Requesting for chunk #%d... ", i)
+		updateStatus(fmt.Sprintf("Requesting for chunk #%d... ", i))
 		query.Set("page", strconv.Itoa(i))
 		req.URL.RawQuery = query.Encode()
 
@@ -98,7 +85,7 @@ func process(mubiUserId string) error {
 		if err := json.Unmarshal(jsonFile, &movieRecords); err != nil {
 			return err
 		}
-		fmt.Printf("downloaded %d records\n", len(movieRecords))
+		updateStatus(fmt.Sprintf("downloaded %d records\n", len(movieRecords)))
 
 		if len(movieRecords) == 0 {
 			break
@@ -110,11 +97,11 @@ func process(mubiUserId string) error {
 	}
 
 	if len(csvRows) == 0 {
-		fmt.Printf("\nNo records found at MUBI server for UserID %s\n", mubiUserId)
+		updateStatus(fmt.Sprintf("No records found at MUBI server for UserID %s\n", mubiUserId))
 		return nil
 	}
 
-	outFile, err := os.Create(letterboxdCsvFileName)
+	outFile, err := os.Create(csvFileName)
 	if err != nil {
 		return err
 	}
@@ -138,12 +125,12 @@ func process(mubiUserId string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("\n%d records are saved to %q\n", len(csvRows), absPath)
+	updateStatus(fmt.Sprintf("%d records are saved to %q\n", len(csvRows), absPath))
 
 	return outFile.Sync()
 }
 
-func generateCsvRow(r MovieRecord) []string {
+func generateCsvRow(r movieRecord) []string {
 	idOut := strconv.Itoa(r.Id)
 	titleOut := r.Film.Title
 	yearOut := strconv.Itoa(r.Film.Year)
