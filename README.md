@@ -18,7 +18,7 @@ Then input UserID to the application window.
 
 ## Download
 
-You can [download](https://github.com/hextriclosan/mubi2letterboxd/releases/tag/v2.0.0) binaries for either Windows, MacOS, Linux operation systems.
+You can [download](https://github.com/hextriclosan/mubi2letterboxd/releases/tag/v2.0.0) binaries for either Windows (version 10 or higher), MacOS, Linux operation systems.
 
 ## Build from sources
 If you don't like to use binaries you can build application by yourself.
