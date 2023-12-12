@@ -21,7 +21,7 @@ func ProcessGui() {
 	button := widget.NewButton("Create CSV", nil)
 	button.Disable()
 
-	statusLabel := widget.NewLabel("XXX")
+	statusLabel := widget.NewLabel("")
 
 	entry := widget.NewEntry()
 	entry.SetPlaceHolder("MUBI UserID")
@@ -40,9 +40,15 @@ func ProcessGui() {
 	button.OnTapped = func() {
 		mubiUserId := entry.Text
 
+		statusLabel.SetText("")
+
+		statusUpdater := func(s string) {
+			statusLabel.SetText(statusLabel.Text + s)
+    	}
+
 		fileDialog := dialog.NewFileSave(func(result fyne.URIWriteCloser, err error) {
 			if err == nil && result != nil {
-				if err := shared.Process(mubiUserId, result.URI().Path(), func(s string) { statusLabel.SetText(s) }); err != nil {
+				if err := shared.Process(mubiUserId, result.URI().Path(), statusUpdater); err != nil {
 					processError := fmt.Errorf("Error occurred: %s\n", err)
 					dialog.ShowError(processError, window)
 					statusLabel.SetText(fmt.Sprint(processError))
@@ -55,7 +61,7 @@ func ProcessGui() {
 		fileDialog.Show()
 	}
 
-	content := container.NewHBox(entry, button, statusLabel)
+	content := container.NewVBox(entry, button, statusLabel)
 	window.SetContent(content)
 
 	window.ShowAndRun()

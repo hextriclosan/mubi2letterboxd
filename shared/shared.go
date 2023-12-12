@@ -43,7 +43,7 @@ func ValidateMubiUserId(mubiUserId string) error {
 	}
 
 	if _, err := strconv.ParseUint(mubiUserId, 10, 64); err != nil {
-		return fmt.Errorf("%q is not a valid UserId: %s", mubiUserId, err)
+		return fmt.Errorf("%q is not a valid UserId: only numbers is supported", mubiUserId)
 	}
 
 	return nil
@@ -97,7 +97,7 @@ func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) 
 	}
 
 	if len(csvRows) == 0 {
-		updateStatus(fmt.Sprintf("No records found at MUBI server for UserID %s\n", mubiUserId))
+		updateStatus(fmt.Sprintf("\nNo records found at MUBI server for UserID %s\n", mubiUserId))
 		return nil
 	}
 
@@ -125,7 +125,7 @@ func Process(mubiUserId string, csvFileName string, updateStatus StatusUpdater) 
 	if err != nil {
 		return err
 	}
-	updateStatus(fmt.Sprintf("%d records are saved to %q\n", len(csvRows), absPath))
+	updateStatus(fmt.Sprintf("\n%d records are saved to %q\n", len(csvRows), absPath))
 
 	return outFile.Sync()
 }
