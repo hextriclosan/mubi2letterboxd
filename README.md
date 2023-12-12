@@ -18,16 +18,16 @@ Then input UserID to the application window.
 
 ## Download
 
-You can [download](https://github.com/hextriclosan/mubi2letterboxd/releases/tag/v2.0.0) binaries for either Windows (version 10 or higher), MacOS, Linux operation systems.
+You can [download](https://github.com/hextriclosan/mubi2letterboxd/releases/tag/v2.0.0) binaries for either Windows (version 10 or higher), or MacOS operation systems.
 
 ## Build from sources
-If you don't like to use binaries you can build application by yourself.
-You need to [install](https://golang.org/doc/install) Go programming language and [make setup](https://developer.fyne.io/started/) Fyne.
+If you don't like to use binaries you can build the application by yourself.
+You need to [install](https://golang.org/doc/install) Go programming language and [set up](https://developer.fyne.io/started/) Fyne.
 
-After successful installation run command:
+After the successful installation run command:
 
 `go build`
 
 ## CLI
-Application also has command line interface use flag `--disable-gui` in order to enable it.
-Program will ask to input MUBI UserID for downloading data from MUBI and generates a _letterboxd.csv_ file suitable for import to Letterboxd.
+Application also has a command line interface use the `--disable-gui` flag in order to enable it.
+The program will ask to input MUBI UserID for downloading data from MUBI and generate a _letterboxd.csv_ file suitable for import to Letterboxd.
