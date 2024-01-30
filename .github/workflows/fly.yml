@@ -2,7 +2,7 @@ name: Fly Deploy
 on:
   push:
     branches:
-      - introduce-ci
+      - main
 jobs:
   deploy:
     name: deploy app to fly.io
